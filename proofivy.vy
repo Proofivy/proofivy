@@ -1,8 +1,8 @@
-# Vyper 0.3.6
+# Vyper 0.3.7
 
 event PublicCommit:
     sender: indexed(address)
-    hash: String[46]
+    hash: String[64]
     commit_count: uint256
 
 event PublicMessage:
@@ -16,7 +16,7 @@ event GuildFounded:
 event GuildMemberCommit:
     guild: String[300]
     sender: indexed(address)
-    hash: String[46]
+    hash: String[64]
     guild_commit_count: uint256
 
 event GuildMemberMessage:
@@ -32,7 +32,7 @@ public_message_price: public(uint256)
 
 public_commit_counter: public(uint256)
 public_commit_senders: public(HashMap[uint256, address])
-public_commits: public(HashMap[uint256, String[46]])
+public_commits: public(HashMap[uint256, String[64]])
 
 public_message_counter: public(uint256)
 public_message_senders: public(HashMap[uint256, address])
@@ -45,7 +45,7 @@ guild_members: public(HashMap[String[300], HashMap[address, bool]])
 
 guild_commit_counter: public(HashMap[String[300], uint256])
 guild_commit_senders: public(HashMap[String[300], HashMap[uint256, address]])
-guild_commits: public(HashMap[String[300], HashMap[uint256, String[46]]])
+guild_commits: public(HashMap[String[300], HashMap[uint256, String[64]]])
 
 guild_message_counter: public(HashMap[String[300], uint256])
 guild_message_senders: public(HashMap[String[300], HashMap[uint256, address]])
@@ -79,7 +79,7 @@ def set_public_message_price(_message_price: uint256):
 
 @external
 @payable
-def public_commit(hash: String[46]):
+def public_commit(hash: String[64]):
     assert msg.value >= self.public_commit_price, 'Insufficient funds'
     send(self.contract_owner, msg.value)
     self.public_commit_counter += 1
@@ -146,7 +146,7 @@ def remove_member(guild: String[300], member: address):
 
 
 @external
-def guild_commit(guild: String[300], hash: String[46]):
+def guild_commit(guild: String[300], hash: String[64]):
     assert self.guild_members[guild][msg.sender], 'Not a member'
     self.guild_commit_counter[guild] += 1
     self.guild_commit_senders[guild][self.guild_commit_counter[guild]] = msg.sender
